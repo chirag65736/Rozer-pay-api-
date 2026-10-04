@@ -3,6 +3,7 @@ import requests, random, string, hashlib, secrets, base64, json, re, time, os
 from urllib.parse import urlparse, quote
 requests.packages.urllib3.disable_warnings()
 
+# ✅ Flask app object EXACT naam "app" hona chahiye (gunicorn app:app isi ko dhundhta hai)
 app = Flask(__name__)
 app.json.sort_keys = False
 
@@ -264,11 +265,13 @@ def razorpay():
         "Dev": show_base(base),
     })
 
+# ✅ Yeh block Railway pe kabhi execute nahi hota (gunicorn use karta hai),
+#    lekin local testing ke liye rakha hai.
 if __name__ == "__main__":
     import logging, sys
     try: sys.stdout.reconfigure(encoding="utf-8")
     except Exception: pass
     logging.getLogger("werkzeug").setLevel(logging.ERROR)
     port = int(os.environ.get("PORT", 8080))
-    print(f"𝗔𝗣𝗜 𝗜𝗦 𝗥𝗨𝗡𝗡𝗜𝗡𝗚 on port {port}...", flush=True)
+    print(f"API IS RUNNING on port {port}...", flush=True)
     app.run(host="0.0.0.0", port=port, threaded=True)
